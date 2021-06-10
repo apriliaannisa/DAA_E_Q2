@@ -63,4 +63,32 @@ public class BellmanFord {
             nodesMap.put(i, new Node(i, i == src ? 0 : (int) 1e9 + 1, i == src ? Integer.toString(i) : ""));
         }
      
+        for (int var = 1; var <= nodes - 1; var++) {
+            for (edge e : getEdges(edges, graph)) {
+                Node x = nodesMap.get(e.x);
+                Node y = nodesMap.get(e.y);
+                
+                if (y.distance > x.distance + graph[x.value][y.value]) 
+                {
+                    y.distance = x.distance + graph[x.value][y.value];
+                    y.path = x.path + "->" + Integer.toString(y.value);
+                }
+            }
+        }
+
+        for (edge e : getEdges(edges, graph)) 
+        {
+            Node x = nodesMap.get(e.x);
+            Node y = nodesMap.get(e.y);
+ 
+            if (y.distance > x.distance + graph[x.value][y.value]) {
+                System.out.println("Negatif Cycle Terdeteksi");
+                return;
+            }
+        }        
+
+        for (int node : nodesMap.keySet()) {
+            System.out.println(nodesMap.get(node));
+        }
+    }    
 }
